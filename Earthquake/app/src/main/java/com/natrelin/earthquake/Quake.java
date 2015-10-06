@@ -16,13 +16,9 @@ public class Quake {
     private String link;
 
     public Date getDate() { return date; }
-
     public String getDetails() { return details; }
-
     public Location getLocation() { return location; }
-
     public double getMagnitude() { return magnitude; }
-
     public String getLink() { return link; }
 
     public Quake(Date _d, String _det, Location _loc, double _mag, String _link) {
