@@ -2,6 +2,8 @@ package com.natrelin.earthquake;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.app.SearchManager;
+import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.SearchView;
 
 public class Earthquake extends Activity {
 
@@ -26,6 +29,11 @@ public class Earthquake extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_earthquake);
         updateFromPreferences();
+
+        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+        SearchableInfo searchableInfo = searchManager.getSearchableInfo(getComponentName());
+        SearchView searchView = (SearchView)findViewById(R.id.searchView);
+        searchView.setSearchableInfo(searchableInfo);
     }
 
     @Override

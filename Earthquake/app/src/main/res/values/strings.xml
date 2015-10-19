@@ -12,4 +12,6 @@
     <string name="menu_preferences">Preferences</string>
     <string name="ok">Okay</string>
     <string name="cancel">Cancel</string>
+    <string name="search_description">Search earthquake locations</string>
+    <string name="title_activity_earthquake_search_results">EarthquakeSearchResults</string>
 </resources>
