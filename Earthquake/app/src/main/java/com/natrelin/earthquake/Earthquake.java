@@ -59,10 +59,11 @@ public class Earthquake extends Activity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SHOW_PREFERENCES) {
-            if(resultCode == Activity.RESULT_OK) {
+            //if(resultCode == Activity.RESULT_OK) {
                 updateFromPreferences();
-            }
+            //}
             FragmentManager fm = getFragmentManager();
+
             final EarthquakeListFragment earthquakeList =
                     (EarthquakeListFragment)fm.findFragmentById(R.id.EarthquakeListFragment);
             Thread t = new Thread(new Runnable() {
@@ -79,7 +80,11 @@ public class Earthquake extends Activity {
         Context context = getApplicationContext();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-        int minMagIndex = prefs.getInt(PreferencesActivity.PREF_MIN_MAG_INDEX, 0);
+        minimumMagnitude = Integer.parseInt(prefs.getString(PreferencesActivity.PREF_MIN_MAG, "3"));
+        updateFreq = Integer.parseInt(prefs.getString(PreferencesActivity.PREF_UPDATE_FREQ, "60"));
+        autoUpdateChecked = prefs.getBoolean(PreferencesActivity.PREF_AUTO_UPDATE, false);
+
+        /*int minMagIndex = prefs.getInt(PreferencesActivity.PREF_MIN_MAG_INDEX, 0);
         if(minMagIndex < 0) { minMagIndex = 0; }
 
         int freqIndex = prefs.getInt(PreferencesActivity.PREF_UPDATE_FREQ_INDEX, 0);
@@ -91,6 +96,6 @@ public class Earthquake extends Activity {
         String[] minMagValues = r.getStringArray(R.array.magnitude);
         minimumMagnitude = Integer.valueOf(minMagValues[minMagIndex]);
         String[] freqValues = r.getStringArray(R.array.update_freq_values);
-        updateFreq = Integer.valueOf(freqValues[freqIndex]);
+        updateFreq = Integer.valueOf(freqValues[freqIndex]);*/
     }
 }
