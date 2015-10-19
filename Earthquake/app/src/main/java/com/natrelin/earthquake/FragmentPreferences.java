@@ -1,51 +1,58 @@
 package com.natrelin.earthquake;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.Spinner;
+
+import java.util.List;
 
 /**
  * Created by mukondono on 10/18/15.
  */
-public class PreferencesActivity extends PreferenceActivity {
+public class FragmentPreferences extends PreferenceActivity {
 
     /*CheckBox autoUpdate;
     Spinner updateFreqSpinner;
     Spinner magnitudeSpinner;*/
 
-    public static final String USER_PREFERENCE = "USER_PREFERENCE";
+    /*public static final String USER_PREFERENCE = "USER_PREFERENCE";
     public static final String PREF_AUTO_UPDATE = "PREF_AUTO_UPDATE";
     public static final String PREF_MIN_MAG_INDEX = "PREF_MIN_MAG_INDEX";
     public static final String PREF_UPDATE_FREQ_INDEX = "PREF_UPDATE_FREQ_INDEX";
     public static final String PREF_MIN_MAG = "PREF_MIN_MAG";
     public static final String PREF_UPDATE_FREQ = "PREF_UPDATE_FREQ";
-    SharedPreferences prefs;
+    SharedPreferences prefs;*/
 
     @Override
+    public void onBuildHeaders(List<Header> target) {
+        loadHeadersFromResource(R.xml.preference_headers, target);
+    }
+
+    @Override
+    protected boolean isValidFragment (String fragmentName) {
+        return PreferencesActivity.class.getName().equals(fragmentName) ||
+                FragmentPreferences.class.getName().equals(fragmentName) ||
+                UserPreferenceFragment.class.getName().equals(fragmentName);
+    }
+
+    /*@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.preferences);
         addPreferencesFromResource(R.xml.userpreferences);
 
-        /*updateFreqSpinner = (Spinner)findViewById(R.id.spinner_update_freq);
+        *//*updateFreqSpinner = (Spinner)findViewById(R.id.spinner_update_freq);
         magnitudeSpinner = (Spinner)findViewById(R.id.spinner_quake_mag);
         autoUpdate = (CheckBox)findViewById(R.id.checkbox_auto_update);
-        populateSpinners();*/
+        populateSpinners();*//*
 
         Context context = getApplicationContext();
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
         //updateUIFromPreferences();
 
-        /*Button okButton = (Button) findViewById(R.id.okButton);
+        *//*Button okButton = (Button) findViewById(R.id.okButton);
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,15 +69,8 @@ public class PreferencesActivity extends PreferenceActivity {
                 PreferencesActivity.this.setResult(RESULT_CANCELED);
                 finish();
             }
-        });*/
-    }
-
-    @Override
-    protected boolean isValidFragment (String fragmentName) {
-        return PreferencesActivity.class.getName().equals(fragmentName) ||
-                FragmentPreferences.class.getName().equals(fragmentName) ||
-                UserPreferenceFragment.class.getName().equals(fragmentName);
-    }
+        });*//*
+    }*/
 
     /*private void savePreferences() {
         int updateIndex = updateFreqSpinner.getSelectedItemPosition();

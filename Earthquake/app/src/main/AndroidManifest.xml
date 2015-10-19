@@ -46,6 +46,8 @@
                 android:resource="@xml/searchable" />
         </activity>
 
+        <activity android:name=".FragmentPreferences"/>
+
     </application>
 
 </manifest>
