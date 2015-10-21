@@ -1,6 +1,7 @@
 package com.natrelin.earthquake;
 
 import android.app.AlarmManager;
+import android.app.IntentService;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ContentResolver;
@@ -39,11 +40,19 @@ import javax.xml.parsers.ParserConfigurationException;
 /**
  * Created by mukondono on 10/19/15.
  */
-public class EarthquakeUpdateService extends Service {
+public class EarthquakeUpdateService extends IntentService {
 
     public static String TAG = "EARTHQUAKE UPDATE SERVICE";
     private AlarmManager alarmManager;
     private PendingIntent alarmIntent;
+
+    public EarthquakeUpdateService() {
+        super("EarthquakeUpdateService");
+    }
+
+    public EarthquakeUpdateService(String name) {
+        super(name);
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -51,7 +60,7 @@ public class EarthquakeUpdateService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    protected void onHandleIntent(Intent intent) {
         Context context = getApplicationContext();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
@@ -68,17 +77,7 @@ public class EarthquakeUpdateService extends Service {
             alarmManager.cancel(alarmIntent);
         }
 
-
-
-        Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    refreshEarthquakes();
-                }
-            });
-        t.start();
-
-        return Service.START_NOT_STICKY;
+        refreshEarthquakes();
     }
 
     @Override
@@ -171,8 +170,6 @@ public class EarthquakeUpdateService extends Service {
 
         } catch (IOException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();
-        } finally {
-            stopSelf();
         }
     }
 
