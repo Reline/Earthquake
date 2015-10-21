@@ -4,6 +4,7 @@ import android.app.ListFragment;
 import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.location.Location;
 import android.os.Bundle;
@@ -42,10 +43,10 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 public class EarthquakeListFragment extends ListFragment {
     //ArrayAdapter<Quake> aa;
-    ArrayList<Quake> earthquakes = new ArrayList<>();
+    //.ArrayList<Quake> earthquakes = new ArrayList<>();
 
     private static final String TAG = "EARTHQUAKE";
-    private Handler handler = new Handler();
+    //private Handler handler = new Handler();
 
     SimpleCursorAdapter adapter;
 
@@ -60,113 +61,20 @@ public class EarthquakeListFragment extends ListFragment {
                 new String[] {EarthquakeProvider.KEY_SUMMARY }, new int[] {android.R.id.text1 }, 0);
         setListAdapter(adapter);
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                refreshEarthquakes();
-            }
-        });
-        t.start();
+        //getLoaderManager().initLoader(0, null, this);
+
+        refreshEarthquakes();
     }
 
     public void refreshEarthquakes() {
-        Log.d(TAG, "Refreshing quakes");
-        // Get the XML
-        try {
-            String quakeFeed = getString(R.string.quake_feed);
-            URL url = new URL(quakeFeed);
+        //getLoaderManager().restartLoader(0, null, EarthquakeListFragment.this);
 
-            URLConnection connection = url.openConnection();
-            HttpURLConnection httpConnection = (HttpURLConnection) connection;
+        getActivity().stopService(new Intent(getActivity(), EarthquakeUpdateService.class));
+        getActivity().startService(new Intent(getActivity(), EarthquakeUpdateService.class));
 
-            int responseCode = httpConnection.getResponseCode();
-            if(responseCode == HttpURLConnection.HTTP_OK) {
-                InputStream in = httpConnection.getInputStream();
-
-                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                DocumentBuilder db = dbf.newDocumentBuilder();
-
-                // parse the earthquake feed
-                Document dom = db.parse(in);
-                Element docEle = dom.getDocumentElement();
-
-                // clear the old earthquakes
-                earthquakes.clear();
-
-                // get a list of each earthquake entry
-                NodeList nl = docEle.getElementsByTagName("event");
-
-                if (nl != null && nl.getLength() > 0) { // nl.getLength() always equals 0
-                    for (int i = 0; i < nl.getLength(); i++) {
-                        Element entry = (Element) nl.item(i);
-
-                        // origin holds link, date, and location
-                        Element origin = (Element) entry.getElementsByTagName("origin").item(0);
-
-                        // date
-                        Element time = (Element) origin.getElementsByTagName("time").item(0);
-                        Element timeVal = (Element) time.getElementsByTagName("value").item(0);
-                        String dt = timeVal.getFirstChild().getNodeValue();
-
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS"); // ex. "2015-10-06T09:50:54.270Z"
-                        Date qdate = new GregorianCalendar(0,0,0).getTime();
-                        try {
-                            qdate = sdf.parse(dt);
-                        } catch (ParseException e) {
-                            Log.d(TAG, "Date parsing exception.", e);
-                        }
-
-                        // details
-                        Element description = (Element) entry.getElementsByTagName("description").item(0);
-                        Element text = (Element)description.getElementsByTagName("text").item(0);
-                        String details = text.getFirstChild().getNodeValue();
-
-                        // location
-                        Element longitude = (Element) origin.getElementsByTagName("longitude").item(0);
-                        Element lonValue = (Element) longitude.getElementsByTagName("value").item(0);
-                        String lon = lonValue.getFirstChild().getNodeValue();
-
-                        Element latitude = (Element) origin.getElementsByTagName("latitude").item(0);
-                        Element latValue = (Element) latitude.getElementsByTagName("value").item(0);
-                        String lat = latValue.getFirstChild().getNodeValue();
-
-                        Location l = new Location("dummyGPS");
-                        l.setLatitude(Double.parseDouble(lat));
-                        l.setLongitude(Double.parseDouble(lon));
-
-                        // magnitude
-                        Element magnitude = (Element) entry.getElementsByTagName("magnitude").item(0);
-                        Element mag = (Element) magnitude.getElementsByTagName("mag").item(0);
-                        Element magValue = (Element) mag.getElementsByTagName("value").item(0);
-                        double mgtd = Double.parseDouble(magValue.getFirstChild().getNodeValue());
-
-                        // link
-                        String hostname = "http://earthquake.usgs.gov";
-                        String linkString = hostname + origin.getAttribute("publicID").substring(8);
-
-                        final Quake quake = new Quake(qdate, details, l, mgtd, linkString);
-
-                        // process a newly found earthquake
-                        handler.post(new Runnable() {
-                            public void run() {
-                                addNewQuake(quake);
-                            }
-                        });
-                    }
-                }
-            }
-        } catch (MalformedURLException e) {
-            Log.d(TAG, "Malformed URL Exception");
-        } catch (IOException e) {
-            Log.d(TAG, "IO Exception");
-        } catch (ParserConfigurationException e) {
-            Log.d(TAG, "Parser Configuration Exception");
-        } catch (SAXException e) {
-            Log.d(TAG, "SAX Exception");
-        }
     }
 
-    private void addNewQuake(Quake _quake) {
+    /*private void addNewQuake(Quake _quake) {
         ContentResolver cr = getActivity().getContentResolver();
 
         String w = EarthquakeProvider.KEY_DATE + "=" + _quake.getDate().getTime();
@@ -187,13 +95,13 @@ public class EarthquakeListFragment extends ListFragment {
         }
         query.close();
 
-        /*Earthquake earthquakeActivity = (Earthquake) getActivity();
+        *//*Earthquake earthquakeActivity = (Earthquake) getActivity();
         if(_quake.getMagnitude() > earthquakeActivity.minimumMagnitude) {
             // add the new quake to our list of earthquakes
             earthquakes.add(_quake);
         }
 
         // notify the array adapter of a change
-        aa.notifyDataSetChanged();*/
-    }
+        aa.notifyDataSetChanged();*//*
+    }*/
 }

@@ -48,6 +48,14 @@
 
         <activity android:name=".FragmentPreferences"/>
 
+        <service android:name=".EarthquakeUpdateService" android:enabled="true" />
+
+        <receiver android:name=".EarthquakeAlarmReceiver">
+            <intent-filter>
+                <action android:name="com.paad.earthquake.ACTION_REFRESH_EARTHQUAKE_ALARM" ></action>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
