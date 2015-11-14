@@ -3,13 +3,14 @@ package com.natrelin.earthquake;
 import android.app.ListActivity;
 import android.app.LoaderManager;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.app.Activity;
-import android.view.View;
+import android.preference.PreferenceManager;
 import android.widget.SimpleCursorAdapter;
 
 public class EarthquakeSearchResults extends ListActivity implements
@@ -39,8 +40,13 @@ public class EarthquakeSearchResults extends ListActivity implements
             query = args.getString(QUERY_EXTRA_KEY);
         }
 
+        Context context = getApplicationContext();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
         String[] projection = { EarthquakeProvider.KEY_ID, EarthquakeProvider.KEY_SUMMARY };
-        String where = EarthquakeProvider.KEY_SUMMARY + " LIKE '%" + query + "%'";
+        String where = EarthquakeProvider.KEY_SUMMARY + " LIKE '%" + query + "%' AND " +
+                EarthquakeProvider.KEY_MAGNITUDE + " >= " +
+                Integer.parseInt(prefs.getString(PreferencesActivity.PREF_MIN_MAG, "3"));
         String sortOrder = EarthquakeProvider.KEY_SUMMARY + " COLLATE LOCALIZED ASC";
 
         return new CursorLoader(this, EarthquakeProvider.CONTENT_URI, projection, where, null,

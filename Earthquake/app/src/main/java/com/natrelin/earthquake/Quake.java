@@ -5,9 +5,6 @@ import android.location.Location;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by NATRELIN on 9/30/2015.
- */
 public class Quake {
     private Date date;
     private String details;

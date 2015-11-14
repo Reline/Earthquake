@@ -3,7 +3,6 @@ package com.natrelin.earthquake;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -30,16 +29,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-/**
- * Created by mukondono on 10/19/15.
- */
 public class EarthquakeUpdateService extends IntentService {
 
     public static String TAG = "EARTHQUAKE UPDATE SERVICE";
@@ -48,10 +42,6 @@ public class EarthquakeUpdateService extends IntentService {
 
     public EarthquakeUpdateService() {
         super("EarthquakeUpdateService");
-    }
-
-    public EarthquakeUpdateService(String name) {
-        super(name);
     }
 
     @Override
@@ -193,14 +183,5 @@ public class EarthquakeUpdateService extends IntentService {
             cr.insert(EarthquakeProvider.CONTENT_URI, values);
         }
         query.close();
-
-        /*Earthquake earthquakeActivity = (Earthquake) getActivity();
-        if(_quake.getMagnitude() > earthquakeActivity.minimumMagnitude) {
-            // add the new quake to our list of earthquakes
-            earthquakes.add(_quake);
-        }
-
-        // notify the array adapter of a change
-        aa.notifyDataSetChanged();*/
     }
 }

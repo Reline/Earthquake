@@ -9,21 +9,14 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteQuery;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.net.URI;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import javax.net.ssl.SSLEngineResult;
-
-/**
- * Created by mukondono on 10/16/15.
- */
 public class EarthquakeProvider extends ContentProvider {
 
     private static final String TAG = "EARTHQUAKE_PROVIDER";
