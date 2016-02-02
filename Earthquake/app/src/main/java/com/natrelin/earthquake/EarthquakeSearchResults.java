@@ -11,11 +11,13 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.SimpleCursorAdapter;
 
 public class EarthquakeSearchResults extends ListActivity implements
         LoaderManager.LoaderCallbacks<Cursor>{
 
+    private static final String TAG = "EarthquakeSearchResults";
     private SimpleCursorAdapter adapter;
     private static String QUERY_EXTRA_KEY = "QUERY_EXTRA_KEY";
 
@@ -72,6 +74,8 @@ public class EarthquakeSearchResults extends ListActivity implements
     private void parseIntent(Intent intent) {
         if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String searchQuery = intent.getStringExtra(SearchManager.QUERY);
+            Log.d(TAG, searchQuery);
+
             Bundle args = new Bundle();
             args.putString(QUERY_EXTRA_KEY, searchQuery);
             getLoaderManager().restartLoader(0, args, this);
