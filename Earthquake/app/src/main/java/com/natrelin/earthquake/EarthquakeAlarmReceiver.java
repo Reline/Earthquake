@@ -4,9 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-/**
- * Created by mukondono on 10/21/15.
- */
 public class EarthquakeAlarmReceiver extends BroadcastReceiver {
 
     public static final String ACTION_REFRESH_EARTHQUAKE_ALARM =

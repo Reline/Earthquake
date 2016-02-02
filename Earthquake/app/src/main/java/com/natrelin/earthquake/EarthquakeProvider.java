@@ -28,7 +28,6 @@ public class EarthquakeProvider extends ContentProvider {
             super(context, name, factory, version);
         }
 
-        private static final String TAG = "EarthquakeProvider";
         private static final String DATABASE_NAME = "earthquakes.db";
         private static final int DATABASE_VERSION = 1;
         private static final String EARTHQUAKE_TABLE = "earthquakes";
@@ -41,8 +40,6 @@ public class EarthquakeProvider extends ContentProvider {
                         + KEY_LOCATION_LNG + " FLOAT, "
                         + KEY_MAGNITUDE + " FLOAT, "
                         + KEY_LINK + " TEXT);";
-
-        private SQLiteDatabase db;
 
         @Override
         public void onCreate(SQLiteDatabase db) {
@@ -214,6 +211,4 @@ public class EarthquakeProvider extends ContentProvider {
         getContext().getContentResolver().notifyChange(uri, null);
         return count;
     }
-
-
 }
